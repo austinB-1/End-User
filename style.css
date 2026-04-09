@@ -1,93 +1,70 @@
-const questions = [
-  {
-    text: "You receive an email saying you won a gift card and must enter your password to claim it. What should you do?",
-    options: [
-      "Click the link and enter your password quickly.",
-      "Ignore or delete the email and do not click the link.",
-      "Forward it to everyone so they can win too."
-    ],
-    correctIndex: 1
-  },
-  {
-    text: "A message from your 'IT department' asks you to install software from an unknown website. What is the safest response?",
-    options: [
-      "Install it immediately so your device stays secure.",
-      "Reply with your username and password instead.",
-      "Verify with your real IT support using a known contact method."
-    ],
-    correctIndex: 2
-  },
-  {
-    text: "Which of these is a common sign of a phishing email?",
-    options: [
-      "Professional language and correct spelling.",
-      "Unexpected urgency and threats if you don’t act.",
-      "Sent from your own address book only."
-    ],
-    correctIndex: 1
-  }
+const messages = [
+  { text: "Your bank: 'Unusual login detected. Click here to verify your password.'", scam: true },
+  { text: "Amazon: 'Your package has shipped. Track it in your app.'", scam: false },
+  { text: "IT Support: 'Install this security update from unknownsite.ru'", scam: true },
+  { text: "Friend: 'Hey, here are the photos from yesterday!'", scam: false },
+  { text: "PayPal: 'Your account will be closed in 24 hours unless you confirm your identity.'", scam: true },
+  { text: "School: 'Reminder: No classes Friday due to teacher work day.'", scam: false },
+  { text: "Netflix: 'Payment failed. Update your card at netflix-billing-support.com'", scam: true },
+  { text: "Teacher: 'Don’t forget your assignment is due tomorrow.'", scam: false }
 ];
 
-function renderQuiz() {
-  const container = document.getElementById("quiz-container");
-  questions.forEach((q, index) => {
-    const div = document.createElement("div");
-    div.className = "question";
+let score = 0;
+let timeLeft = 30;
+let timerInterval;
 
-    const title = document.createElement("h3");
-    title.textContent = `Question ${index + 1}: ${q.text}`;
-    div.appendChild(title);
+const messageBox = document.getElementById("message-box");
+const scoreDisplay = document.getElementById("score");
+const timerDisplay = document.getElementById("timer");
+const feedback = document.getElementById("feedback");
 
-    q.options.forEach((opt, i) => {
-      const label = document.createElement("label");
-      label.style.display = "block";
-      label.style.marginBottom = "0.25rem";
+function startGame() {
+  score = 0;
+  timeLeft = 30;
+  scoreDisplay.textContent = score;
+  timerDisplay.textContent = timeLeft;
+  feedback.textContent = "";
 
-      const input = document.createElement("input");
-      input.type = "radio";
-      input.name = `question-${index}`;
-      input.value = i;
+  showRandomMessage();
 
-      label.appendChild(input);
-      label.appendChild(document.createTextNode(" " + opt));
-      div.appendChild(label);
-    });
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    timerDisplay.textContent = timeLeft;
 
-    container.appendChild(div);
-  });
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      endGame();
+    }
+  }, 1000);
 }
 
-function gradeQuiz() {
-  let score = 0;
+function showRandomMessage() {
+  const random = messages[Math.floor(Math.random() * messages.length)];
+  messageBox.textContent = random.text;
+  messageBox.dataset.scam = random.scam;
+}
 
-  questions.forEach((q, index) => {
-    const selected = document.querySelector(
-      `input[name="question-${index}"]:checked`
-    );
-    if (selected && Number(selected.value) === q.correctIndex) {
-      score++;
-    }
-  });
+function checkAnswer(isScam) {
+  const correct = (isScam === (messageBox.dataset.scam === "true"));
 
-  const result = document.getElementById("result");
-  const total = questions.length;
-  const percent = Math.round((score / total) * 100);
-
-  let message = "";
-  if (percent === 100) {
-    message = "Perfect! You’re a phishing-spotting pro.";
-  } else if (percent >= 67) {
-    message = "Nice job! You’re mostly safe, but review the tips above.";
+  if (correct) {
+    score++;
+    feedback.textContent = "Correct!";
+    feedback.style.color = "#22c55e";
   } else {
-    message = "Be careful. Review the best practices and try again.";
+    feedback.textContent = "Incorrect!";
+    feedback.style.color = "#ef4444";
   }
 
-  result.textContent = `You scored ${score}/${total} (${percent}%). ${message}`;
+  scoreDisplay.textContent = score;
+  showRandomMessage();
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  renderQuiz();
-  document
-    .getElementById("submit-quiz")
-    .addEventListener("click", gradeQuiz);
-});
+function endGame() {
+  messageBox.textContent = "Time’s up!";
+  feedback.textContent = `Final Score: ${score}`;
+}
+
+document.getElementById("start-btn").addEventListener("click", startGame);
+document.getElementById("safe-btn").addEventListener("click", () => checkAnswer(false));
+document.getElementById("scam-btn").addEventListener("click", () => checkAnswer(true));
