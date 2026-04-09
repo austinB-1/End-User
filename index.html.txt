@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Spot the Scam: Phishing & Social Engineering Training</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="hero">
+    <h1>Spot the Scam</h1>
+    <p>Learn how to recognize phishing and social engineering attacks before you click.</p>
+  </header>
+
+  <main>
+    <section id="about">
+      <h2>What is Phishing & Social Engineering?</h2>
+      <p>
+        Phishing and social engineering are techniques attackers use to trick people into
+        giving up passwords, money, or sensitive information. Instead of hacking computers,
+        they manipulate human trust.
+      </p>
+    </section>
+
+    <section id="tips">
+      <h2>Best Practices to Stay Safe</h2>
+      <ul>
+        <li><strong>Check the sender:</strong> Look closely at the email address or phone number.</li>
+        <li><strong>Hover over links:</strong> Make sure the URL matches the real site.</li>
+        <li><strong>Watch for urgency:</strong> “Act now or else” is a classic red flag.</li>
+        <li><strong>Never share passwords:</strong> Legitimate companies will not ask for them.</li>
+        <li><strong>Verify out-of-band:</strong> If unsure, contact the person using a known method.</li>
+      </ul>
+    </section>
+
+    <section id="examples">
+      <h2>Can You Spot the Red Flags?</h2>
+
+      <article class="example safe">
+        <h3>Example 1 – Likely Safe</h3>
+        <p>
+          Your bank sends a monthly statement notification from the same address you always see.
+          The email uses your full name and does not ask you to click a link to “verify your account.”
+        </p>
+        <p><strong>Why it seems safe:</strong> Expected, consistent sender, no pressure, no request for sensitive data.</p>
+      </article>
+
+      <article class="example risky">
+        <h3>Example 2 – Suspicious</h3>
+        <p>
+          “URGENT: Your account will be closed in 24 hours! Click here to confirm your password.”
+          The sender address is slightly misspelled and the link goes to <code>http://secure-login-bank-support.com</code>.
+        </p>
+        <p><strong>Red flags:</strong> Urgency, password request, weird URL, spelling issues.</p>
+      </article>
+    </section>
+
+    <section id="quiz">
+      <h2>Interactive Quiz</h2>
+      <p>Answer the questions below to test your skills.</p>
+
+      <div id="quiz-container"></div>
+
+      <button id="submit-quiz">Submit Quiz</button>
+      <p id="result"></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Created as an end user security awareness training exercise.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
